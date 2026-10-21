@@ -29,8 +29,12 @@ if ($private -eq 'true') {
   throw "O celular consulta as versões sem login. $repo precisa ser público para o aplicativo baixar a atualização."
 }
 
+$preferencia = $ErrorActionPreference
+$ErrorActionPreference = 'Continue'
 gh release view "v$version" --repo $repo 2>$null | Out-Null
-if ($LASTEXITCODE -eq 0) { throw "A versão $version já foi publicada. Aumente version e code em version.json." }
+$jaPublicada = $LASTEXITCODE -eq 0
+$ErrorActionPreference = $preferencia
+if ($jaPublicada) { throw "A versão $version já foi publicada. Aumente version e code em version.json." }
 
 Write-Host 'Gerando o APK...'
 Push-Location (Join-Path $root 'android')
