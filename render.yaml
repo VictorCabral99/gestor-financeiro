@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: gestor-financeiro
+    runtime: node
+    plan: starter
+    numInstances: 1
+    buildCommand: npm run install:all && npm run build
+    startCommand: npm start
+    disk:
+      name: gestor-data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: HOST
+        value: 0.0.0.0
+      - key: GESTOR_DATA_DIR
+        value: /var/data
+      - key: GESTOR_ROLE
+        value: bridge
+      - key: GESTOR_PASSWORD
+        sync: false
+      - key: GESTOR_SESSION_SECRET
+        generateValue: true

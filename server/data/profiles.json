@@ -1,0 +1,16 @@
+{
+  "profiles": [
+    {
+      "id": "default",
+      "name": "Victor",
+      "dbFile": "gestor.db",
+      "createdAt": "2026-09-24T22:00:34.863Z"
+    },
+    {
+      "id": "effffc53",
+      "name": "Simone",
+      "dbFile": "gestor-simone.db",
+      "createdAt": "2026-09-24T22:00:44.829Z"
+    }
+  ]
+}
