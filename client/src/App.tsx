@@ -4,21 +4,12 @@ import { LoginScreen } from "./components/LoginScreen";
 import { ProfileSwitcher } from "./components/ProfileSwitcher";
 import { QueueBanner } from "./components/QueueBanner";
 import { ProfilesProvider } from "./lib/profiles";
-import { warmLocalCopy } from "./lib/warm";
 import { ExpensesPage } from "./pages/ExpensesPage";
 import { HistoryPage } from "./pages/HistoryPage";
 import { InvoicesPage } from "./pages/InvoicesPage";
 import { MonthPage } from "./pages/MonthPage";
 import { SetupPage } from "./pages/SetupPage";
 import { YearPage } from "./pages/YearPage";
-
-function nativeBridge() {
-  return (
-    window as unknown as {
-      GestorAndroid?: { openAccount?: () => void; checkUpdate?: () => void };
-    }
-  ).GestorAndroid;
-}
 
 function TabGlyph({ d }: { d: string }) {
   return (
@@ -32,11 +23,6 @@ type Gate = "loading" | "login" | "app";
 
 function Shell() {
   const [more, setMore] = useState(false);
-  const onPhone = nativeBridge() != null;
-
-  useEffect(() => {
-    if (onPhone) void warmLocalCopy();
-  }, []);
 
   return (
     <ProfilesProvider>
@@ -87,16 +73,6 @@ function Shell() {
             <NavLink to="/historico" onClick={() => setMore(false)}>
               Histórico
             </NavLink>
-            {onPhone && (
-              <button type="button" onClick={() => nativeBridge()?.openAccount?.()}>
-                Conta do computador
-              </button>
-            )}
-            {onPhone && (
-              <button type="button" onClick={() => nativeBridge()?.checkUpdate?.()}>
-                Buscar atualização
-              </button>
-            )}
           </div>
         )}
 

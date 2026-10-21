@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Gestor</string>
+    <string name="app_name">Gestor Financeiro</string>
     <string name="account">Conta</string>
     <string name="check_update">Atualizar</string>
 </resources>

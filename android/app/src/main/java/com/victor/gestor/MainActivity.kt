@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity() {
         web.settings.javaScriptEnabled = true
         web.settings.domStorageEnabled = true
         web.settings.allowFileAccess = false
-        web.setBackgroundColor(0xFF000000.toInt())
+        web.setBackgroundColor(0xFFF6F4F1.toInt())
         web.addJavascriptInterface(ShellBridge(), "GestorAndroid")
         web.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {

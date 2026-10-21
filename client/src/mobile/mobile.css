@@ -1,0 +1,233 @@
+/* Celular: off-white, fonte de aplicativo e cor. O computador continua verde. */
+:root {
+  --bg0: #f6f4f1;
+  --bg1: #f6f4f1;
+  --ink: #1c1917;
+  --muted: #78716c;
+  --line: #e7e2da;
+  --surface: #ffffff;
+  --surface-solid: #ffffff;
+  --accent: #3b5bdb;
+  --accent-soft: #e7ecfb;
+  --danger: #e11d48;
+  --warn: #b45309;
+  --pending: #b45309;
+  --paid: #047857;
+  --shadow: 0 10px 28px rgba(28, 25, 23, 0.06);
+  --font: "Manrope", system-ui, sans-serif;
+  --display: "Manrope", system-ui, sans-serif;
+  color-scheme: light;
+}
+
+body {
+  background: #f6f4f1;
+  color: #1c1917;
+}
+
+.brand {
+  min-width: 0;
+  flex: 1;
+}
+
+.brand strong,
+.section-head h2,
+.stat strong,
+.money-lg,
+.amount {
+  font-family: "Manrope", system-ui, sans-serif;
+  letter-spacing: -0.03em;
+}
+
+.brand strong {
+  font-size: 1.05rem;
+  line-height: 1.15;
+}
+
+.panel,
+.mini-card,
+.year-month,
+.row,
+.login-card,
+.modal,
+.profile-menu,
+.more-sheet,
+.stat {
+  background: #fff;
+  border: 0;
+  border-radius: 22px;
+  box-shadow: 0 10px 28px rgba(28, 25, 23, 0.06);
+  backdrop-filter: none;
+}
+
+.grid-stats {
+  gap: 0.7rem;
+  border: 0;
+}
+
+.stat.positive strong {
+  color: #047857;
+}
+
+.stat.negative strong {
+  color: #e11d48;
+}
+
+.stat.stat-hero {
+  background: #3b5bdb;
+  border: 0;
+  border-radius: 22px;
+}
+
+.stat.stat-hero label {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.stat.stat-hero strong {
+  color: #fff;
+}
+
+.btn,
+.month-input,
+.profile-trigger {
+  border: 0;
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: 0 6px 16px rgba(28, 25, 23, 0.05);
+}
+
+.btn-primary,
+.tabs button.active,
+.profile-create-actions button {
+  background: #3b5bdb;
+  border-color: #3b5bdb;
+  color: #fff;
+  box-shadow: none;
+}
+
+.tabs {
+  background: #efece6;
+  border-radius: 16px;
+  padding: 0.25rem;
+  gap: 0.2rem;
+}
+
+.tabs button {
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: #57534e;
+  box-shadow: none;
+}
+
+.basis-tabs button.active {
+  background: #fff;
+  color: #1c1917;
+  box-shadow: 0 4px 12px rgba(28, 25, 23, 0.06);
+}
+
+.tabbar {
+  z-index: 40;
+  background: #fff;
+  border: 0;
+  box-shadow: 0 12px 32px rgba(28, 25, 23, 0.1);
+}
+
+.tabbar a.active,
+.tabbar button.active {
+  color: #3b5bdb;
+  background: #e7ecfb;
+  box-shadow: none;
+}
+
+.more-backdrop {
+  bottom: calc(4.7rem + env(safe-area-inset-bottom));
+  background: rgba(28, 25, 23, 0.28);
+}
+
+.more-sheet a,
+.more-sheet button {
+  border: 0;
+  border-radius: 14px;
+  color: #1c1917;
+}
+
+.field input,
+.field select,
+.field textarea,
+.login-card input,
+.month-input {
+  background: #fff;
+  color: #1c1917;
+  border: 0;
+  border-radius: 16px;
+  box-shadow: 0 6px 16px rgba(28, 25, 23, 0.05);
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  outline: 2px solid #c7d2fe;
+  border-color: transparent;
+}
+
+.badge-pending {
+  background: #fef3c7;
+  color: #b45309;
+  border: 0;
+}
+
+.badge-paid,
+.badge-reserve-in {
+  background: #d1fae5;
+  color: #047857;
+  border: 0;
+}
+
+.badge-card,
+.badge-invoice-pay {
+  background: #e7ecfb;
+  color: #3b5bdb;
+  border: 0;
+}
+
+.badge-reserve-out {
+  background: #ffedd5;
+  color: #c2410c;
+  border: 0;
+}
+
+.badge-overdue,
+.alert-overdue,
+.error {
+  background: #ffe4e6;
+  color: #be123c;
+  border: 0;
+  border-radius: 16px;
+}
+
+.queue-banner {
+  background: #fff7ed;
+  color: #9a3412;
+  border: 0;
+  border-radius: 16px;
+}
+
+.year-month.current {
+  background: #e7ecfb;
+  border: 0;
+}
+
+.year-bar-track,
+.reserve-progress {
+  background: #efece6;
+}
+
+.year-bar-fill,
+.reserve-progress-bar {
+  background: #3b5bdb;
+}
+
+.row-clickable:hover {
+  background: #fff;
+  box-shadow: 0 10px 24px rgba(59, 91, 219, 0.12);
+}

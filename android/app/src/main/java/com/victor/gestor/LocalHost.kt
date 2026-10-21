@@ -106,17 +106,17 @@ class LocalHost(private val context: Context, private val accountUrl: () -> Stri
             write(socket, 400, "Bad Request", emptyList(), ByteArray(0))
             return
         }
-        val relative = path.trimStart('/').ifEmpty { "index.html" }
+        val relative = path.trimStart('/').ifEmpty { DOCUMENT }
         val asset = openAsset(relative)
         val (name, bytes) = if (asset != null) {
             relative to asset
         } else if (!relative.startsWith("assets/")) {
-            "index.html" to (openAsset("index.html") ?: ByteArray(0))
+            DOCUMENT to (openAsset(DOCUMENT) ?: ByteArray(0))
         } else {
             write(socket, 404, "Not Found", emptyList(), ByteArray(0))
             return
         }
-        val body = if (name == "index.html") injectShell(bytes) else bytes
+        val body = if (name == DOCUMENT) injectShell(bytes) else bytes
         write(socket, 200, "OK", listOf("Content-Type: ${mime(name)}", "Cache-Control: no-cache"), body)
     }
 
@@ -195,6 +195,7 @@ class LocalHost(private val context: Context, private val accountUrl: () -> Stri
 
     companion object {
         const val PORT = 54731
+        const val DOCUMENT = "mobile.html"
 
         fun normalizeAccount(raw: String): String? {
             val trimmed = raw.trim().trimEnd('/')

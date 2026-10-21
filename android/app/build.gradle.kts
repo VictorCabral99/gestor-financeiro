@@ -52,12 +52,12 @@ val webDest = layout.projectDirectory.dir("src/main/assets/www")
 
 val buildWeb = tasks.register<Exec>("buildWeb") {
     workingDir = rootProject.projectDir.parentFile
-    commandLine("cmd", "/c", "npm", "--prefix", "client", "run", "build")
+    commandLine("cmd", "/c", "npm", "--prefix", "client", "run", "build:mobile")
 }
 
 val copyWeb = tasks.register<Copy>("copyWeb") {
     dependsOn(buildWeb)
-    from(rootProject.file("../client/dist"))
+    from(rootProject.file("../client/dist-mobile"))
     into(webDest)
     doFirst { project.delete(webDest) }
 }

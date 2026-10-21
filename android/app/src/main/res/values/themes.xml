@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="Theme.Gestor" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">#F2F2F2</item>
-        <item name="android:statusBarColor">#000000</item>
-        <item name="android:navigationBarColor">#000000</item>
-        <item name="android:windowLightStatusBar">false</item>
-        <item name="android:windowLightNavigationBar">false</item>
-        <item name="android:windowBackground">#000000</item>
+        <item name="colorPrimary">#3B5BDB</item>
+        <item name="android:statusBarColor">#F6F4F1</item>
+        <item name="android:navigationBarColor">#F6F4F1</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar">true</item>
+        <item name="android:windowBackground">#F6F4F1</item>
     </style>
 </resources>
