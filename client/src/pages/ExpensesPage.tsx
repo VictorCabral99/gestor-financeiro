@@ -15,6 +15,7 @@ import {
   today,
 } from "../lib/format";
 import { basisHint, ledgerQuery } from "../lib/ledger";
+import { useDataRefresh } from "../lib/refresh";
 import { useLedgerParams } from "../lib/useLedgerParams";
 import type {
   Account,
@@ -149,6 +150,7 @@ export function ExpensesPage() {
   useEffect(() => {
     void load();
   }, [load]);
+  useDataRefresh(load);
 
   const overdue = expenses.filter(isOverdue);
   const overdueTotal = overdue.reduce((s, e) => s + e.amount, 0);
@@ -305,14 +307,14 @@ export function ExpensesPage() {
           {showCashExtras && (
             <>
               <button
-                className="btn"
+                className="btn quick-launch"
                 onClick={() => setModal("reserve-move")}
                 disabled={reserves.length === 0 || accounts.length === 0}
               >
                 Reserva
               </button>
               <button
-                className="btn"
+                className="btn quick-launch"
                 onClick={() => setModal("transfer")}
                 disabled={accounts.length < 2}
               >
@@ -320,7 +322,7 @@ export function ExpensesPage() {
               </button>
             </>
           )}
-          <button className="btn btn-primary" onClick={() => setModal("expense")}>
+          <button className="btn btn-primary quick-launch" onClick={() => setModal("expense")}>
             + Gasto
           </button>
         </div>

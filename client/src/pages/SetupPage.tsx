@@ -4,6 +4,7 @@ import { api } from "../lib/api";
 import { currentMonth, money, moneyInput, parseMoneyInput, today } from "../lib/format";
 import { categorySelectOptions, sortCategoriesTree } from "../lib/categories";
 import { pickCategoryColor } from "../lib/categoryColors";
+import { useDataRefresh } from "../lib/refresh";
 import { useDescriptionSuggestions } from "../lib/useDescriptionSuggestions";
 import type { Account, AccountBalance, Card, Category, ExpenseRule, Reserve } from "../types";
 
@@ -77,6 +78,7 @@ export function SetupPage() {
   useEffect(() => {
     void load();
   }, [load]);
+  useDataRefresh(load);
 
   const tabs: { id: Tab; label: string }[] = [
     { id: "accounts", label: "Contas" },
@@ -97,7 +99,7 @@ export function SetupPage() {
             Contas, cartões, reservas, categorias e regras fixas
           </p>
         </div>
-        <div style={{ display: "flex", gap: "0.5rem" }}>
+        <div className="desk-only" style={{ display: "flex", gap: "0.5rem" }}>
           <button
             type="button"
             className="btn"
@@ -210,7 +212,7 @@ export function SetupPage() {
               <h2>Contas correntes</h2>
               <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
                 <button
-                  className="btn"
+                  className="btn quick-launch"
                   onClick={() => {
                     setSelectedAccount(null);
                     setModal("transfer");
@@ -271,7 +273,7 @@ export function SetupPage() {
                       </button>
                       <button
                         type="button"
-                        className="btn btn-sm"
+                        className="btn btn-sm quick-launch"
                         onClick={() => {
                           setSelectedAccount(a);
                           setModal("transfer");
@@ -396,7 +398,7 @@ export function SetupPage() {
                       <span className="amount">{money(r.current_amount)}</span>
                       <button
                         type="button"
-                        className="btn btn-sm"
+                        className="btn btn-sm quick-launch"
                         onClick={() => {
                           setSelectedReserve(r);
                           setModal("move-reserve");

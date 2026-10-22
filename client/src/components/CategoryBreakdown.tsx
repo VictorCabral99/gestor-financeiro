@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { money } from "../lib/format";
+import { money, share } from "../lib/format";
 import type { CategoryTreeNode } from "../lib/expenseHelpers";
 
 type Props = {
@@ -73,7 +73,7 @@ export function CategoryBreakdown({
               </span>
               <span className="cat-parent-side">
                 <span className="amount">{money(node.total)}</span>
-                <span className="muted">{pct}%</span>
+                <span className="muted">{share(pct)}</span>
               </span>
             </button>
             <div className="year-bar-track cat-bar">
@@ -109,8 +109,8 @@ export function CategoryBreakdown({
                       <div className="cat-child-side">
                         <span className="amount">{money(child.total)}</span>
                         <span className="muted">
-                          {childOfParent}% da cat.
-                          {grandTotal > 0 ? ` · ${childOfAll}%` : ""}
+                          {share(childOfParent)} da cat.
+                          {grandTotal > 0 ? ` · ${share(childOfAll)}` : ""}
                         </span>
                       </div>
                       <div className="year-bar-track cat-bar cat-bar-child">

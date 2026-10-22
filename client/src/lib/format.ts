@@ -3,9 +3,30 @@ const BRL = new Intl.NumberFormat("pt-BR", {
   currency: "BRL",
 });
 
-/** Centavos → R$ */
+const MASK = "R$\u00A0••••";
+let concealValues = false;
+
+/** Só o celular liga isso, antes de desenhar a tela. */
+export function setConcealValues(hidden: boolean) {
+  concealValues = hidden;
+}
+
+export function valuesConcealed(): boolean {
+  return concealValues;
+}
+
+/** Centavos → "R$ 1.234,56". Negativo: "R$ -1.234,56". Oculto: "R$ ••••". */
 export function money(cents: number): string {
-  return BRL.format(cents / 100);
+  if (concealValues) return MASK;
+  const formatted = BRL.format(Math.abs(cents) / 100);
+  if (cents >= 0) return formatted;
+  const moved = formatted.replace(/(\s)/, "$1-");
+  return moved === formatted ? formatted.replace("R$", "R$ -") : moved;
+}
+
+/** Percentual visível, ou "••" quando os valores estão ocultos. */
+export function share(pct: number): string {
+  return concealValues ? "••" : `${pct}%`;
 }
 
 /** Centavos → string editável pt-BR (ex: 1000000 → "10.000,00") */

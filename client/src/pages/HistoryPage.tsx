@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { api, peekCache } from "../lib/api";
 import { formatDateBr, monthLabel } from "../lib/format";
+import { useDataRefresh } from "../lib/refresh";
 
 type MonthRow = {
   month: string;
@@ -27,6 +28,7 @@ export function HistoryPage() {
   useEffect(() => {
     void load();
   }, [load]);
+  useDataRefresh(load);
 
   return (
     <div>

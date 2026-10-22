@@ -2,8 +2,9 @@ import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { api, peekCache } from "../lib/api";
 import { isOverdue } from "../lib/expenseHelpers";
-import { money, moneyInput, monthLabel, parseMoneyInput, today } from "../lib/format";
+import { money, moneyInput, monthLabel, parseMoneyInput, share, today } from "../lib/format";
 import { ledgerQuery } from "../lib/ledger";
+import { useDataRefresh } from "../lib/refresh";
 import { useLedgerParams } from "../lib/useLedgerParams";
 import { useDescriptionSuggestions } from "../lib/useDescriptionSuggestions";
 import type {
@@ -20,6 +21,7 @@ import { ExpenseModal } from "../components/ExpenseModal";
 import { MonthSpendReview } from "../components/MonthSpendReview";
 import { LensBar } from "../components/LensBar";
 import { TotalsStrip } from "../components/TotalsStrip";
+import { HomeFold } from "../components/HomeFold";
 
 type Modal = null | "expense" | "income";
 
@@ -115,6 +117,7 @@ export function MonthPage() {
   useEffect(() => {
     void load();
   }, [load]);
+  useDataRefresh(load);
 
   const overdue = expenses.filter(isOverdue);
   const overdueTotal = overdue.reduce((s, e) => s + e.amount, 0);
@@ -136,12 +139,17 @@ export function MonthPage() {
           </p>
         </div>
         <div className="month-actions" style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
-          <input className="month-input" type="month" value={month} onChange={(e) => setMonth(e.target.value)} />
-          <button className="btn btn-primary" onClick={() => setModal("expense")}>
+          <label className="month-picker" style={{ display: "contents" }}>
+            <span className="month-picker-face" style={{ display: "none" }}>
+              {monthLabel(month)}
+            </span>
+            <input className="month-input" type="month" value={month} onChange={(e) => setMonth(e.target.value)} />
+          </label>
+          <button className="btn btn-primary quick-launch" onClick={() => setModal("expense")}>
             + Gasto
           </button>
           {showIncomes && (
-            <button className="btn" onClick={() => setModal("income")}>
+            <button className="btn quick-launch" onClick={() => setModal("income")}>
               + Receita
             </button>
           )}
@@ -167,15 +175,11 @@ export function MonthPage() {
       )}
 
       {channel === "tudo" && salaryBudget && (
-        <div className="panel" style={{ marginBottom: "1rem" }}>
-          <div className="section-head">
-            <div>
-              <h2 style={{ margin: 0 }}>Com este salário</h2>
-              <p className="muted" style={{ margin: "0.25rem 0 0", fontSize: "0.85rem" }}>
-                Contas do mês + faturas que vencem neste ciclo
-              </p>
-            </div>
-          </div>
+        <HomeFold
+          title="Com este salário"
+          hint="Contas do mês + faturas que vencem neste ciclo"
+          style={{ marginBottom: "1rem" }}
+        >
           <div className="grid-stats" style={{ marginTop: "0.75rem" }}>
             <div className="stat positive">
               <label>Receitas</label>
@@ -204,19 +208,15 @@ export function MonthPage() {
               </strong>
             </div>
           </div>
-        </div>
+        </HomeFold>
       )}
 
       {channel === "tudo" && dashboard?.after_obligations && (
-        <div className="panel" style={{ marginBottom: "1rem" }}>
-          <div className="section-head">
-            <div>
-              <h2 style={{ margin: 0 }}>Após obrigações</h2>
-              <p className="muted" style={{ margin: "0.25rem 0 0", fontSize: "0.85rem" }}>
-                Saldo atual − pendentes até o fim do mês − faturas ainda em aberto
-              </p>
-            </div>
-          </div>
+        <HomeFold
+          title="Após obrigações"
+          hint="Saldo atual − pendentes até o fim do mês − faturas ainda em aberto"
+          style={{ marginBottom: "1rem" }}
+        >
           <div className="grid-stats" style={{ marginTop: "0.75rem" }}>
             <div className="stat positive">
               <label>Caixa</label>
@@ -239,7 +239,7 @@ export function MonthPage() {
               <strong>{money(dashboard.after_obligations.available)}</strong>
             </div>
           </div>
-        </div>
+        </HomeFold>
       )}
 
       {overdue.length > 0 && channel !== "cartoes" && (
@@ -258,13 +258,14 @@ export function MonthPage() {
 
       <div className="layout-2">
         <div className="stack">
-          <div className="panel">
-            <div className="section-head">
-              <h2>Por categoria</h2>
+          <HomeFold
+            title="Por categoria"
+            action={
               <Link className="btn btn-sm" to={movementsHref}>
                 Ver todas
               </Link>
-            </div>
+            }
+          >
 
             {expenses.length === 0 ? (
               channel === "cartoes" &&
@@ -303,13 +304,10 @@ export function MonthPage() {
                 onChanged={load}
               />
             )}
-          </div>
+          </HomeFold>
 
           {showIncomes && incomes.length > 0 && (
-            <div className="panel">
-              <div className="section-head">
-                <h2>Receitas</h2>
-              </div>
+            <HomeFold title="Receitas">
               <div className="stack">
                 {incomes.map((i) => (
                   <div className="row-item" key={i.id}>
@@ -345,16 +343,13 @@ export function MonthPage() {
                   </div>
                 ))}
               </div>
-            </div>
+            </HomeFold>
           )}
         </div>
 
         <div className="stack">
           {showAccounts && (
-            <div className="panel">
-              <div className="section-head">
-                <h2>Contas</h2>
-              </div>
+            <HomeFold title="Contas">
               {dashboard?.accounts.length ? (
                 <div className="stack">
                   {dashboard.accounts.map((a) => (
@@ -371,20 +366,18 @@ export function MonthPage() {
               ) : (
                 <p className="empty">Cadastre uma conta em Cadastros.</p>
               )}
-            </div>
+            </HomeFold>
           )}
 
           {showCards && (
-            <div className="panel">
-              <div className="section-head">
-                <h2>Cartões</h2>
-                <Link
-                  className="btn btn-sm"
-                  to={`/faturas`}
-                >
+            <HomeFold
+              title="Cartões"
+              action={
+                <Link className="btn btn-sm" to={`/faturas`}>
                   Faturas
                 </Link>
-              </div>
+              }
+            >
               {dashboard?.cards.length ? (
                 <div className="stack">
                   {dashboard.cards.map((c) => (
@@ -407,14 +400,11 @@ export function MonthPage() {
                   <Link to="/faturas">Operar faturas</Link>
                 </p>
               )}
-            </div>
+            </HomeFold>
           )}
 
           {showReserves && (
-            <div className="panel">
-              <div className="section-head">
-                <h2>Reservas</h2>
-              </div>
+            <HomeFold title="Reservas">
               {dashboard?.reserves.length ? (
                 <div className="stack">
                   {dashboard.reserves.map((r) => {
@@ -442,7 +432,7 @@ export function MonthPage() {
                                 marginLeft: "0.45rem",
                               }}
                             >
-                              {pct}%
+                              {share(pct)}
                             </span>
                           )}
                         </div>
@@ -453,7 +443,7 @@ export function MonthPage() {
                             aria-valuenow={Math.min(pct, 100)}
                             aria-valuemin={0}
                             aria-valuemax={100}
-                            aria-label={`${pct}% da meta`}
+                            aria-label={`${share(pct)} da meta`}
                           >
                             <div
                               className="reserve-progress-bar"
@@ -468,7 +458,7 @@ export function MonthPage() {
               ) : (
                 <p className="empty">Nenhuma reserva.</p>
               )}
-            </div>
+            </HomeFold>
           )}
         </div>
       </div>

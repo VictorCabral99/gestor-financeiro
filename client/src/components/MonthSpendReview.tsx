@@ -9,7 +9,7 @@ import {
   subcategoryBreakdown,
   type SubcategorySlice,
 } from "../lib/expenseHelpers";
-import { formatDateBr, money } from "../lib/format";
+import { formatDateBr, money, share } from "../lib/format";
 import type { Category, Expense } from "../types";
 
 type Props = {
@@ -147,7 +147,7 @@ export function MonthSpendReview({
               <p className="muted" style={{ margin: "0.15rem 0 0", fontSize: "0.85rem" }}>
                 {money(selectedMeta.total)}
                 {grandTotal > 0
-                  ? ` · ${Math.round((selectedMeta.total / grandTotal) * 100)}% do mês`
+                  ? ` · ${share(Math.round((selectedMeta.total / grandTotal) * 100))} do mês`
                   : ""}
                 {" · "}
                 {selectedAllCount} lançamento{selectedAllCount === 1 ? "" : "s"}
@@ -200,7 +200,7 @@ export function MonthSpendReview({
                       style={{ background: s.color }}
                       aria-hidden
                     />
-                    {s.name} · {pct}% · {s.count}x
+                    {s.name} · {share(pct)} · {s.count}x
                   </button>
                 );
               })}
@@ -315,7 +315,7 @@ export function MonthSpendReview({
                       aria-hidden
                     />
                     <strong>{node.name}</strong>
-                    <span className="muted">{pct}%</span>
+                    <span className="muted">{share(pct)}</span>
                   </span>
                   <span className="amount">{money(node.total)}</span>
                 </div>

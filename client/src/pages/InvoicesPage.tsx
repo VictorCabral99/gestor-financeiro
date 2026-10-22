@@ -4,6 +4,7 @@ import { DeleteFixedModal } from "../components/DeleteFixedModal";
 import { ExpenseModal } from "../components/ExpenseModal";
 import { ModalForm } from "../components/ModalForm";
 import { categorySelectOptions } from "../lib/categories";
+import { useDataRefresh } from "../lib/refresh";
 import { categoryName } from "../lib/expenseHelpers";
 import { api, peekCache } from "../lib/api";
 import {
@@ -197,6 +198,10 @@ export function InvoicesPage() {
   useEffect(() => {
     void loadDetail();
   }, [loadDetail]);
+  useDataRefresh(() => {
+    void loadMeta();
+    void loadDetail();
+  });
 
   // Sincroniza URL só quando o estado da tela muda (evita loop com searchParams)
   useEffect(() => {

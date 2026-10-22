@@ -3,6 +3,7 @@ import { NavLink, Route, Routes } from "react-router-dom";
 import { LoginScreen } from "../components/LoginScreen";
 import { ProfileSwitcher } from "../components/ProfileSwitcher";
 import { QueueBanner } from "../components/QueueBanner";
+import { setConcealValues } from "../lib/format";
 import { ProfilesProvider } from "../lib/profiles";
 import { warmLocalCopy } from "../lib/warm";
 import { ExpensesPage } from "../pages/ExpensesPage";
@@ -11,6 +12,7 @@ import { InvoicesPage } from "../pages/InvoicesPage";
 import { MonthPage } from "../pages/MonthPage";
 import { SetupPage } from "../pages/SetupPage";
 import { YearPage } from "../pages/YearPage";
+import { QuickAdd } from "./QuickAdd";
 
 function nativeBridge() {
   return (
@@ -18,6 +20,26 @@ function nativeBridge() {
       GestorAndroid?: { openAccount?: () => void; checkUpdate?: () => void };
     }
   ).GestorAndroid;
+}
+
+function Eye() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12z" />
+      <circle cx="12" cy="12" r="3" />
+    </svg>
+  );
+}
+
+function EyeOff() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M3 3l18 18" />
+      <path d="M10.6 10.6a3 3 0 0 0 4.2 4.2" />
+      <path d="M9.9 5.2A11 11 0 0 1 12 5c6.5 0 10 7 10 7a18 18 0 0 1-3.2 4.1" />
+      <path d="M6.1 6.1C3.8 7.8 2 12 2 12s3.5 6 10 6c1.3 0 2.5-.3 3.6-.8" />
+    </svg>
+  );
 }
 
 function TabGlyph({ d }: { d: string }) {
@@ -30,8 +52,21 @@ function TabGlyph({ d }: { d: string }) {
 
 type Gate = "loading" | "login" | "app";
 
+const VALUES_HIDDEN = "gestor.valuesHidden";
+
 function Shell() {
   const [more, setMore] = useState(false);
+  const [hidden, setHidden] = useState(
+    () => localStorage.getItem(VALUES_HIDDEN) === "1",
+  );
+  setConcealValues(hidden);
+  document.documentElement.classList.toggle("values-hidden", hidden);
+
+  function toggleValues() {
+    const next = !hidden;
+    localStorage.setItem(VALUES_HIDDEN, next ? "1" : "0");
+    setHidden(next);
+  }
 
   useEffect(() => {
     void warmLocalCopy();
@@ -45,6 +80,15 @@ function Shell() {
             <strong>Gestor Financeiro</strong>
           </div>
           <div className="topbar-right">
+            <button
+              type="button"
+              className="eye-toggle"
+              aria-pressed={hidden}
+              aria-label={hidden ? "Exibir valores" : "Esconder valores"}
+              onClick={toggleValues}
+            >
+              {hidden ? <EyeOff /> : <Eye />}
+            </button>
             <ProfileSwitcher />
           </div>
         </header>
@@ -103,6 +147,7 @@ function Shell() {
             <span>Mais</span>
           </button>
         </nav>
+        {!more && <QuickAdd />}
       </div>
     </ProfilesProvider>
   );

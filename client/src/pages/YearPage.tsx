@@ -7,6 +7,7 @@ import { api, peekCache } from "../lib/api";
 import type { CategoryTreeNode } from "../lib/expenseHelpers";
 import { money, monthLabel } from "../lib/format";
 import { ledgerQuery, type LedgerTotals } from "../lib/ledger";
+import { useDataRefresh } from "../lib/refresh";
 import { useLedgerParams } from "../lib/useLedgerParams";
 
 type YearMonth = {
@@ -62,6 +63,7 @@ export function YearPage() {
   useEffect(() => {
     void load();
   }, [load]);
+  useDataRefresh(load);
 
   const maxExpense = Math.max(1, ...(data?.months.map((m) => m.expenses) ?? [1]));
   const current = `${year}-${String(new Date().getMonth() + 1).padStart(2, "0")}`;
